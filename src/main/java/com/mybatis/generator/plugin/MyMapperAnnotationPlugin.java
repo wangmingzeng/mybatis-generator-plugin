@@ -1,4 +1,4 @@
-package cn.com.zach.generator.plugin;
+package com.mybatis.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;

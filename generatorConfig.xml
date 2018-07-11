@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	
+	<classPathEntry location="/Users/zengwangming/workBench/maven/maven_repository/mysql/mysql-connector-java/5.1.5/mysql-connector-java-5.1.5.jar" />
+
+	<!-- defaultModelType定义MBG如何生成**实体类**；
+			conditional:*这是默认值*,这个模型和下面的hierarchical类似，除了如果那个单独的类将只包含一个字段，将不会生成一个单独的类。 
+						因此,如果一个表的主键只有一个字段,那么不会为该字段生成单独的实体类,会将该字段合并到基本实体类中。
+			hierarchical:如果表有主键,那么该模型会产生一个单独的主键实体类,如果表还有BLOB字段， 
+						则会为表生成一个包含所有BLOB字段的单独的实体类,然后为所有其他的字段生成一个单独的实体类。 MBG会在所有生成的实体类之间维护一个继承关系。
+			flat:该模型为每一张表只生成一个实体类。这个实体类包含表中的所有字段。**这种模型最简单，推荐使用。**
+		targetRuntime:此属性用于指定生成的代码的运行时环境。该属性支持以下可选值：
+			MyBatis3:*这是默认值*
+			MyBatis3Simple
+			Ibatis2Java2
+			Ibatis2Java5 一般情况下使用默认值即可，有关这些值的具体作用以及区别请查看中文文档的详细内容。
+	 -->
+	<context id="mybatis-generator-plugin" defaultModelType="flat" targetRuntime="MyBatis3">
+		<!-- MBG会自动给表名或字段名添加**分隔符** 针对存在空格或者关键字等情况-->
+		<property name="autoDelimitKeywords" value="true"/>
+		<property name="beginningDelimiter" value="`"/>
+		<property name="endingDelimiter" value="`"/> 
+		<!-- 设置要使用的Java文件的编码，默认使用当前平台的编码 -->
+		<property name="javaFileEncoding" value="UTF-8"/> 
+		
+		<!-- javaFormatter和xmlFormatter属性**可能会**很有用，如果想使用模板来定制生成的java文件和xml文件的样式 -->
+		<!-- <property name="javaFormatter" value=""/>
+		<property name="xmlFormatter" value=""/> -->
+		
+		<!-- 配置插件 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="com.mybatis.generator.plugin.MyOverIsMergeablePlugin" />
+		<plugin type="com.mybatis.generator.plugin.MyMapperAnnotationPlugin" />
+		<plugin type="com.mybatis.generator.plugin.MyToStringPlugin" />
+		
+
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+		<commentGenerator>
+			<property name="suppressDate" value="true"/>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<!-- 数据库配置 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" 
+						connectionURL="jdbc:mysql://127.0.0.1:3306/glasses"
+						userId="root" 
+						password="root">
+		</jdbcConnection>
+
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 
+			和 NUMERIC 类型解析为java.math.BigDecimal 
+			默认情况下的转换规则为：
+
+			如果精度>0或者长度>18，就会使用java.math.BigDecimal
+			如果精度=0并且10<=长度<=18，就会使用java.lang.Long
+			如果精度=0并且5<=长度<=9，就会使用java.lang.Integer
+			如果精度=0并且长度<5，就会使用java.lang.Short
+			-->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="cn.com.flaginfo.integral.dto"
+			targetProject="./src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true"/>
+		</javaModelGenerator>
+		
+		<!-- 生成的映射文件包名和位置 -->
+		<sqlMapGenerator targetPackage="cn.com.flaginfo.integral.mapper"
+			targetProject="./src/main/java" >
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator targetPackage="cn.com.flaginfo.integral.mapper"
+			targetProject="./src/main/java" type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- 要生成的表(更改tableName 和domainObjectName 就可以了) -->
+		<table schema="glasses" tableName="tb_admin_menu" domainObjectName="AdminMenu"
+			enableCountByExample="true" enableUpdateByExample="true" 
+			enableDeleteByExample="true" enableSelectByExample="true" 
+			selectByExampleQueryId="false" >
+			<property name="useActualColumnNames" value="false" />	
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> 
+		<!-- <table tableName="%">
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table> -->
+	</context>
+</generatorConfiguration>

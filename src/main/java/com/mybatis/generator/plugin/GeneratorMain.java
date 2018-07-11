@@ -1,4 +1,4 @@
-package cn.com.zach.generator.plugin;
+package com.mybatis.generator.plugin;
 
 import java.io.File;
 import java.io.IOException;
