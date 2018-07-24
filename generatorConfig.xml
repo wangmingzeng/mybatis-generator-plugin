@@ -36,9 +36,11 @@
 		
 
 		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-		<commentGenerator>
+		<commentGenerator type="com.mybatis.generator.plugin.MyCommentGenerator">
 			<property name="suppressDate" value="true"/>
-			<property name="suppressAllComments" value="true" />
+			<property name="suppressAllComments" value="false" />
+			<property name="addRemarkComments" value="true" />
+			
 		</commentGenerator>
 
 		<!-- 数据库配置 -->
@@ -57,7 +59,7 @@
 			如果精度=0并且5<=长度<=9，就会使用java.lang.Integer
 			如果精度=0并且长度<5，就会使用java.lang.Short
 			-->
-		<javaTypeResolver>
+		<javaTypeResolver type="com.mybatis.generator.plugin.MyJavaTypeResolverDefaultImpl">
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 
@@ -69,8 +71,8 @@
 		</javaModelGenerator>
 		
 		<!-- 生成的映射文件包名和位置 -->
-		<sqlMapGenerator targetPackage="cn.com.flaginfo.integral.mapper"
-			targetProject="./src/main/java" >
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="./src/main/resources" >
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
