@@ -17,6 +17,10 @@
 			Ibatis2Java5 一般情况下使用默认值即可，有关这些值的具体作用以及区别请查看中文文档的详细内容。
 	 -->
 	<context id="mybatis-generator-plugin" defaultModelType="flat" targetRuntime="MyBatis3">
+		<property name="targetDir" value="./src/main/java"/>
+		<property name="serviceInterfaceTargetPackage" value="cn.com.flaginfo.glasses.service"/>
+		<property name="serviceImplTargetPackage" value="cn.com.flaginfo.glasses.service.impl"/>
+	
 		<!-- MBG会自动给表名或字段名添加**分隔符** 针对存在空格或者关键字等情况-->
 		<property name="autoDelimitKeywords" value="true"/>
 		<!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
@@ -36,9 +40,10 @@
 		<plugin type="com.mybatis.generator.plugin.MyOverIsMergeablePlugin" />
 		<plugin type="com.mybatis.generator.plugin.MyMapperAnnotationPlugin" />
 		<plugin type="com.mybatis.generator.plugin.MyToStringPlugin" />
-		<plugin type="com.mybatis.generator.plugin.MyInsertElementGeneratedPlugin" />
-		
-		
+		<plugin type="com.mybatis.generator.plugin.JacksonToJsonPlugin" />
+		<plugin type="com.mybatis.generator.plugin.PaginationPlugin" />
+		<plugin type="com.mybatis.generator.plugin.SpringServiceInterfacePlugin" />
+		<!-- <plugin type="com.mybatis.generator.plugin.MyInsertElementGeneratedPlugin" /> -->
 
 		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
 		<commentGenerator type="com.mybatis.generator.plugin.MyCommentGenerator">
@@ -67,7 +72,7 @@
 		</javaTypeResolver>
 
 		<!-- 生成模型的包名和位置 -->
-		<javaModelGenerator targetPackage="cn.com.flaginfo.integral.dto"
+		<javaModelGenerator targetPackage="cn.com.flaginfo.glasses.dto"
 			targetProject="./src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true"/>
@@ -80,7 +85,7 @@
 		</sqlMapGenerator>
 
 		<!-- 生成DAO的包名和位置 -->
-		<javaClientGenerator targetPackage="cn.com.flaginfo.integral.mapper"
+		<javaClientGenerator targetPackage="cn.com.flaginfo.glasses.mapper"
 			targetProject="./src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
@@ -124,8 +129,8 @@
 	        注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
 	     -->
 		<table schema="glasses" tableName="tb_admin_menu" domainObjectName="AdminMenu"
-			enableCountByExample="true" enableUpdateByExample="true" 
-			enableDeleteByExample="true" enableSelectByExample="true" 
+			enableCountByExample="true" enableSelectByExample="true" 
+			enableDeleteByExample="false" enableUpdateByExample="false" 
 			selectByExampleQueryId="false" >
 			
 			<!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->

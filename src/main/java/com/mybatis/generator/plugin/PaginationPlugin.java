@@ -1,4 +1,4 @@
-package com.neo.mybatis.generator.plugin;
+package com.mybatis.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -14,17 +14,16 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by wenpeng on 2017/2/7.
+ * 分页插件
  */
 public class PaginationPlugin extends PluginAdapter {
     private static SimpleDateFormat df = new SimpleDateFormat("EEE MMM ww HH:mm:ss z yyyy", Locale.US);
     private final static FullyQualifiedJavaType INTEGER_TYPE = new FullyQualifiedJavaType("java.lang.Integer");
     private static final String OFFSET = "offset";
     private static final String LIMIT = "limit";
-    private static final String template =
-            "<if test=\"offset != null and limit != null\">\n" +
-                    "      limit ${offset}, ${limit}\n" +
-                    "    </if>";
+    private static final String template = "<if test=\"offset != null and limit != null\">\n" 
+    										+"      limit ${offset}, ${limit}\n" 
+    										+"</if>";
 
     @Override
     public boolean validate(List<String> warnings) {
@@ -33,7 +32,9 @@ public class PaginationPlugin extends PluginAdapter {
 
     @Override
     public boolean modelExampleClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    		//Example类里添加page方法
         String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
+        //添加属性
         addProperty(OFFSET, INTEGER_TYPE, topLevelClass, this.getContext(), tableName);
         addProperty(LIMIT, INTEGER_TYPE, topLevelClass, this.getContext(), tableName);
 
@@ -66,6 +67,7 @@ public class PaginationPlugin extends PluginAdapter {
     }
 
     void addProperty(String field, FullyQualifiedJavaType fieldType, TopLevelClass topLevelClass, Context context, String tableName) {
+    		//添加get及set方法
         for (Method method : topLevelClass.getMethods()) {
             if (method.getName().equals("clear")) {
                 method.addBodyLine("this." + field + " = null;");
@@ -74,7 +76,6 @@ public class PaginationPlugin extends PluginAdapter {
         topLevelClass.addField(makeStringField(context, field, fieldType, tableName));
         topLevelClass.addMethod(makeGetterStringMethod(context, field, fieldType, tableName));
         topLevelClass.addMethod(makeSetterStringMethod(context, field, fieldType, tableName));
-        System.out.println("-----------------" + topLevelClass.getType().getShortName() + " add field " + field + " and getter related.");
     }
 
     Field makeStringField(Context context, String fieldName, FullyQualifiedJavaType fieldType, String tableName) {
