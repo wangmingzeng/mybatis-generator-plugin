@@ -56,16 +56,14 @@ public class SpringServiceInterfacePlugin extends PluginAdapter {
 		List<GeneratedJavaFile> mapperJavaFiles = new ArrayList<GeneratedJavaFile>();
 
 		for (GeneratedJavaFile javaFile : introspectedTable.getGeneratedJavaFiles()) {
-
 			CompilationUnit unit = javaFile.getCompilationUnit();
 			FullyQualifiedJavaType baseModelJavaType = unit.getType();
-
 			String shortName = baseModelJavaType.getShortName();
 
 			GeneratedJavaFile springServiceJavafile = null;
 			GeneratedJavaFile springServiceImplJavaFile = null;
 
-			if (shortName.endsWith("Mapper")) {/// 复制Mapper代码创建Spring Service 接口
+			if (shortName.endsWith("Mapper")) {// 复制Mapper代码创建Spring Service 接口
 				try {
 					// 生成Service Interface 文件
 					springServiceJavafile = generaeteSpringServiceFile(shortName, javaFile);
@@ -95,15 +93,18 @@ public class SpringServiceInterfacePlugin extends PluginAdapter {
 		if (!serviceFile.exists()) {
 			return true;
 		}
-
 		return false;
 	}
 
+	/**
+	 * 生成service接口类
+	 * @param shortName
+	 * @param javaFile
+	 * @return
+	 */
 	public GeneratedJavaFile generaeteSpringServiceFile(String shortName, GeneratedJavaFile javaFile) {
 		JavaFormatter javaFormatter = context.getJavaFormatter();
-
-		Interface mapperInterface = new Interface(
-				serviceInterfaceTargetPackage + "." + shortName.replace("Mapper", "Service"));
+		Interface mapperInterface = new Interface(serviceInterfaceTargetPackage + "." + shortName.replace("Mapper", "Service"));
 		mapperInterface.setVisibility(JavaVisibility.PUBLIC);
 
 		// Copy Mapper中的方法
@@ -113,7 +114,6 @@ public class SpringServiceInterfacePlugin extends PluginAdapter {
 		}
 
 		GeneratedJavaFile springServiceJavafile = new GeneratedJavaFile(mapperInterface, targetDir, javaFormatter);
-
 		return springServiceJavafile;
 	}
 
@@ -134,7 +134,6 @@ public class SpringServiceInterfacePlugin extends PluginAdapter {
 		addMethod(topLevelClass, javaFile, shortName);
 
 		GeneratedJavaFile springServiceImplJavaFile = new GeneratedJavaFile(topLevelClass, targetDir, javaFormatter);
-
 		return springServiceImplJavaFile;
 	}
 
